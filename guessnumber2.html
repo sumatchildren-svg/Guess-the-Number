@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="chance">
+        <h1>Guess the Number</h1>
+        <p>Enter a number between 1 and 100, to restart, just reload the page:</p>
+        <input type="number" id="guess" min="1" max="100">
+        <button id="submit" onclick="submit()">Submit</button>
+        <p id="result"></p>
+        <p id="generatedNumber"></p>
+        <p id="chancesleft">You have 5 chances</p>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #ffa3a3;
+    }
+
+    .chance{
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    input {
+        padding: 10px;
+        margin: 10px 0;
+        width: 80%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;     
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        transform:scale(1.1);
+    }
+    #result {     
+        margin-top: 20px;
+        font-size: 1.2em;
+    }
+    </style>
+
+       <script>
+let generatedNumber;
+let chancesleft = 6;
+ 
+ function submit() {
+    if (!generatedNumber) {
+        generatedNumber = Math.floor(Math.random() * 100) + 1;
+        console.log("Generated Number:", generatedNumber); // For debugging purposes
+    }
+     const userGuess = parseInt(document.getElementById("guess").value);
+    if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+        document.getElementById("result").textContent = "Please enter a valid number between 1 and 100.";
+        return;
+    }
+     if (userGuess === generatedNumber) {
+         document.getElementById("result").textContent = "Congratulations! You've guessed the number!";
+        document.getElementById('generatedNumber').textContent = "The number was " + generatedNumber;
+    } else {
+        chancesleft--;
+        document.getElementById("chancesleft").textContent = `You have ${chancesleft} chances left.`;
+        if (userGuess < generatedNumber) {
+            document.getElementById("result").textContent = "Too low! Try again.";
+        } else {
+            document.getElementById("result").textContent = "Too high! Try again.";
+        }
+        if (chancesleft === 0) {
+            document.getElementById("result").textContent = "Game Over! You've used all your chances.";
+            document.getElementById('generatedNumber').textContent = "The number was " + generatedNumber;
+            document.getElementById("submit").disabled = true;
+            
+        }
+    }
+ }
+    </script>
